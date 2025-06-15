@@ -1,6 +1,6 @@
 {
   "name": "parsexl",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Parses Excel formulas into a clean, well-typed abstract syntax tree you can analyse or evaluate in TypeScript.",
   "author": "Chris Moran",
   "license": "MIT",
@@ -18,11 +18,7 @@
   ],
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && tsc -p tsconfig.json",
-    "dev": "tsc -w --preserveWatchOutput",
-    "lint": "eslint \"src/**/*.{ts,tsx}\"",
-    "test": "jest",
-    "prepare": "husky"
+    "build": "npm run clean && tsc -p tsconfig.json"
   },
   "type": "module",
   "main": "./dist/index.cjs",

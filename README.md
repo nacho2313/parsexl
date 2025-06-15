@@ -26,7 +26,7 @@ A lightweight, dependency-free TypeScript library that parses raw Microsoft Exce
 ## 📦 Installation
 
 ```bash
-npm i excel-formula-ast
+npm i @haz3y0ne/parsexl
 ```
 
 ---
