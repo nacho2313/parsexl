@@ -26,7 +26,11 @@ A lightweight, dependency-free TypeScript library that parses raw Microsoft Exce
 ## 📦 Installation
 
 ```bash
+<<<<<<< HEAD
 npm i @haz3y0ne/parsexl
+=======
+npm i @hazey0ne/parsexl
+>>>>>>> 05ddb2c024f2717214e3684ce22e778d8562f654
 ```
 
 ---

@@ -1,12 +1,12 @@
 {
-  "name": "parsexl",
+  "name": "@haz3y0ne/parsexl",
   "version": "0.0.2",
   "description": "Parses Excel formulas into a clean, well-typed abstract syntax tree you can analyse or evaluate in TypeScript.",
   "author": "Chris Moran",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/haz3y0ne/excel-formula-ast"
+    "url": "https://github.com/haz3y0ne/parsexl"
   },
   "keywords": [
     "excel",
