@@ -1,4 +1,4 @@
-# excel-formula-ast
+# parsexl
 
 A lightweight, dependency-free TypeScript library that parses raw Microsoft Excel formulas into well‑structured, strongly‑typed Abstract Syntax Trees (ASTs). Perfect for analysis, transformation, or formula tooling—without needing Excel or Office integration.
 
