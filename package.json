@@ -1,6 +1,6 @@
 {
   "name": "@haz3y0ne/parsexl",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Parses Excel formulas into a clean, well-typed abstract syntax tree you can analyse or evaluate in TypeScript.",
   "author": "Chris Moran",
   "license": "MIT",
